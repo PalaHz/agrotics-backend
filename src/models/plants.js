@@ -1,8 +1,8 @@
 import mongoose, { model, Schema } from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
 const plantSchema = new Schema({
-  commonName: { type: String },
-  cientificName: { type: String },
+  commonName: { type: String, required: true },
+  cientificName: { type: String, required: true },
   createdAt: { type: Date, default: Date.now() },
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
@@ -42,15 +42,6 @@ plantSchema.plugin(mongoosePaginate);
 
 const plantModel = model("plants", plantSchema);
 
-const options = {
-  page: 1,
-  limit: 10,
-  collation: {
-    locale: "en",
-  },
-  populate: "createdBy",
-};
-
-plantModel.paginate({}, options);
+plantModel.paginate();
 
 export default plantModel;
