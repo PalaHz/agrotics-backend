@@ -1,0 +1,20 @@
+name: Deploy-BE
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: self-hosted
+
+    steps:
+      - uses: actions/checkout@v2
+      - run: touch .env
+      - run: echo TOKEN_KEY=${{secrets.TOKEN_KEY}} >> .env
+      - run: echo AWS_ACCESS_KEY_ID=${{secrets.AWS_ACCESS_KEY_ID}} >> .env
+      - run: echo SECRET_ACCESS_KEY=${{secrets.SECRET_ACCESS_KEY}} >> .env
+      - run: sudo npm install
+      - run: sudo pm2 kill && sudo pm2 start npm -- start
