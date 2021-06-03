@@ -57,7 +57,7 @@ plantsRouter.get('/:id', async(req, res)=>{
 })
 
 plantsRouter.put(
-  "/",
+  "/:id",
   upload.single("file"),
   body("commonName").isString(),
   authenticateJwt,
@@ -67,7 +67,7 @@ plantsRouter.put(
       return res.status(400).json({ errors: errors.array() });
     }
     try {
-      const plant = await PlantsService.updatePlantById(req.params.id, req.body, res.locals.user, req.file);
+      const plant = await PlantsService.updatePlantById(req.params.id, req.body, req.file);
       res.json({...plant})
     } catch (error) {
       res.status(500).send(error.message)

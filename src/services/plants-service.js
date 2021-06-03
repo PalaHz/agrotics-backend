@@ -42,12 +42,15 @@ export const PlantsService = {
    * @returns
    */
   async createPlant(plant, user, file) {
+    let data;
     try {
-      const data = await uploadPhoto(file);
+      if (file) {
+        data = await uploadPhoto(file);
+      }
       await new plantModel({
         ...plant,
         createdBy: user._id,
-        imgLink: data.Location,
+        imgLink: data ? data.Location : "",
       }).save();
       return { message: "Plant Successfully Created" };
     } catch (error) {
@@ -57,25 +60,33 @@ export const PlantsService = {
 
   async getPlantById(id) {
     try {
-      const plant = await plantModel.findById(id);
+      const plant = await plantModel
+        .findById(id)
+        .select("-createdAt -createdBy -__v");
       return plant;
     } catch (error) {
       throw new CustomError(401, "Plant not found");
     }
   },
 
-  async updatePlantById(id, plant, user, file) {
+  async updatePlantById(id, plant, file) {
     try {
-      if (file) {
-        const data = await updatePhoto(plant, imgLink, file);
+      const doc = await plantModel.findOne({ _id: id });
+      if (doc) {
+        Object.entries(plant).forEach((item) => {
+          doc[item[0]] = item[1];
+        });
+        if (file) {
+          const s3Response = await uploadPhoto(file);
+          doc.imgLink = s3Response.Location;
+        }
+        doc.save();
+      } else {
+        throw new CustomError(401, "Plant Nor found");
       }
-      await new plantModel({
-        ...plant,
-        createdBy: user._id,
-        imgLink: data.Location,
-      }).save();
-      return { message: "Plant Successfully Created" };
+      return { message: "Plant Successfully Updated" };
     } catch (error) {
+      console.log(error);
       throw new CustomError(500, "Internal Server Error");
     }
   },
@@ -90,27 +101,6 @@ const uploadPhoto = (file) => {
   const params = {
     Bucket: "agrotic-resources",
     Key: `plantsPictures/${Date.now() + file.originalname}`,
-    Body: file.buffer,
-  };
-  return new Promise((resolve, reject) => {
-    s3.upload(params, async (err, data) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(data);
-      }
-    });
-  });
-};
-
-const updatePhoto = (imgLink, file) => {
-  const s3 = new aws.S3({
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.SECRET_ACCESS_KEY,
-  });
-  const params = {
-    Bucket: "agrotic-resources",
-    Key: `plantsPictures/${imgLink}`,
     Body: file.buffer,
   };
   return new Promise((resolve, reject) => {
