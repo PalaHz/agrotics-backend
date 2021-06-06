@@ -54,6 +54,7 @@ export const PlantsService = {
       }).save();
       return { message: "Plant Successfully Created" };
     } catch (error) {
+      console.log(error)
       throw new CustomError(500, "Internal Server Error");
     }
   },
