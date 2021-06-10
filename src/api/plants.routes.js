@@ -1,6 +1,6 @@
 import express from "express";
-import { authenticateJwt } from "../middlewares/authorization";
 import { PlantsService } from "../services/plants-service";
+import { authenticateJwt } from "../middlewares/authorization";
 import { body, validationResult } from "express-validator";
 const plantsRouter = express.Router();
 import multer from "multer";

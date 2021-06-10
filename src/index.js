@@ -5,7 +5,7 @@ import cors from "cors";
 import morgan from "morgan";
 
 const app = express();
-const port = 3000; // default port to listen
+const port = process.env.PORT; // default port to listen
 
 /* Config */
 import "./config/database";
