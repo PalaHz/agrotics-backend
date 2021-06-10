@@ -15,6 +15,7 @@ export const userService = {
         throw new CustomError(400, "Bad Credentials");
       }
     } catch (error) {
+      console.log(error)
       throw new CustomError(400, error);
     }
   },
