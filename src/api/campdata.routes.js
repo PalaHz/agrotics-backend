@@ -5,10 +5,19 @@ import { body, validationResult } from "express-validator";
 
 export const campDataRoutes = express.Router();
 
-campDataRoutes.post("/", async(req, res) => {
+campDataRoutes.post("/", async (req, res) => {
   try {
     const response = await CampDataService.addDataCamp(req.body);
     res.status(200).json(response);
+  } catch (error) {
+    res.status(error.status).json(error);
+  }
+});
+
+campDataRoutes.get("/:id",  async (req, res) => {
+  try {
+    const registers = await CampDataService.getCampDataByPlant(req.params.id);
+    res.json(registers)
   } catch (error) {
     res.status(error.status).json(error);
   }

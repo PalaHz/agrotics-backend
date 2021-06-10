@@ -10,4 +10,12 @@ export const CampDataService = {
       throw new CustomError(500, "Internal server Error");
     }
   },
+  async getCampDataByPlant(id){
+    try {
+      const registers = await CampDataModel.find().where('idPlant').equals(id).sort('date');
+      return registers;
+    } catch (error) {
+        throw new CustomError(500, "Internal Server Error")
+    }
+  }
 };
