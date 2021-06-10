@@ -5,10 +5,11 @@ import cors from "cors";
 import morgan from "morgan";
 
 const app = express();
-const port = 3000; // default port to listen
+const port = 5500; // default port to listen
 
 /* Config */
 import "./config/database";
+import { campDataRoutes } from "./api/campdata.routes";
 app.get("/", (req, res) => {
   res.json({ message: "Ok succes actualizado cors MANUEL AA" });
 });
@@ -20,6 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 /* Routers */
 app.use("/users", userRouter);
 app.use("/plants", plantsRouter);
+app.use("/campData", campDataRoutes);
 
 // start the express server
 app.listen(port, () => {
