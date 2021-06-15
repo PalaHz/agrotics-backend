@@ -7,15 +7,19 @@ export const CampDataService = {
       const register = await new CampDataModel(campDataDto).save();
       return register;
     } catch (error) {
+      console.log(error);
       throw new CustomError(500, "Internal server Error");
     }
   },
-  async getCampDataByPlant(id){
+  async getCampDataByPlant(id) {
     try {
-      const registers = await CampDataModel.find().where('idPlant').equals(id).sort('date');
+      const registers = await CampDataModel.find()
+        .where("idPlant")
+        .equals(id)
+        .sort("date");
       return registers;
     } catch (error) {
-        throw new CustomError(500, "Internal Server Error")
+      throw new CustomError(500, "Internal Server Error");
     }
-  }
+  },
 };
