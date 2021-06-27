@@ -3,7 +3,7 @@ import mongoose, { Schema, model } from "mongoose"
 const CampDataSchema = new Schema({
   idPlant: { type: mongoose.Types.ObjectId, ref: "plants" },
   location: { type: String },
-  date: { type: Date, default: Date.now() },
+  date: { type: Date, default: Date.now },
   lote: { type: String },
   /* m2 */
   plantedArea: { type: Number },
@@ -51,6 +51,7 @@ const CampDataSchema = new Schema({
   plagueControl: { type: String },
   plagueControlAmount: { type: Number },
   plagueControlDate: { type: Number },
+  observations: { type: String },
 });
 
 export const CampDataModel = model('CampData', CampDataSchema)
