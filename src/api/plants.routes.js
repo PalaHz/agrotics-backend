@@ -2,10 +2,15 @@ import express from "express";
 import { PlantsService } from "../services/plants-service";
 import { authenticateJwt } from "../middlewares/authorization";
 import { body, validationResult } from "express-validator";
-const plantsRouter = express.Router();
-import multer from "multer";
 import { ReportService } from "../services/report-service";
+
+/* Multer */
+import multer from "multer";
 const upload = multer();
+
+/* Router */
+const plantsRouter = express.Router();
+
 //Plants
 plantsRouter.get("/table/", authenticateJwt, async (req, res) => {
   try {
@@ -81,12 +86,34 @@ plantsRouter.put(
   }
 );
 
+/* Reports */
+
 plantsRouter.get("/report/general-report", async (req, res) => {
+  ReportService.getPlantsCreatedByReport()
+    .then((report) => {
+      res.json(report);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+});
+
+plantsRouter.get("/report/daily-report", async (req, res) => {
   try {
-    const reports = await ReportService.getPlantsCreatedByReport();
-    res.json(reports);
+    const report = await ReportService.getPlantsDailyReport();
+    res.json(report)
   } catch (error) {
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json(error)
+  }
+});
+
+
+plantsRouter.get("/report/camp-data-daily-report", async (req, res) => {
+  try {
+    const report = await ReportService.getCampDataDailyReport();
+    res.json(report)
+  } catch (error) {
+    res.status(500).json(error)
   }
 });
 
