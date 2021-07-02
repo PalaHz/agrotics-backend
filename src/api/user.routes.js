@@ -50,32 +50,31 @@ router.post(
   }
 );
 
-router.get(
-  "/",
-  authenticateJwt,
-  adminMiddleware,
-  async (req, res) => {
-    try {
-      const users = await userService.getAllUsers(res.locals.user);
-      res.json(users);
-    } catch (error) {
-      res.status(error.status).send(error.message);
-    }
+router.get("/", authenticateJwt, adminMiddleware, async (req, res) => {
+  try {
+    const users = await userService.getAllUsers(res.locals.user);
+    res.json(users);
+  } catch (error) {
+    res.status(error.status).send(error.message);
   }
-);
+});
 
-router.delete(
-  "/",
-  authenticateJwt,
-  adminMiddleware,
-  async (req, res) => {
-    try {
-      const user = await userService.deleteUser(req.query.id);
-      res.json({message: "User Deleted Succesfully" });
-    } catch (error) {
-      res.status(error.status).send(error.message);
-    }
+router.delete("/", authenticateJwt, adminMiddleware, async (req, res) => {
+  try {
+    const user = await userService.deleteUser(req.query.id);
+    res.json({ message: "User Deleted Succesfully" });
+  } catch (error) {
+    res.status(error.status).send(error.message);
   }
-);
+});
+
+router.get("/profile", authenticateJwt, async (req, res) => {
+  try {
+    const user = await userService.getUserProfile(res.locals.user._id)
+    res.send(user);
+  } catch (error) {
+    res.status(error.status).send(error.message)
+  }
+});
 
 export default router;

@@ -15,7 +15,7 @@ export const userService = {
         throw new CustomError(400, "Bad Credentials");
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
       throw new CustomError(400, error);
     }
   },
@@ -50,6 +50,15 @@ export const userService = {
       return user;
     } catch (error) {
       throw new CustomError(500, "Internal Server Error");
+    }
+  },
+
+  async getUserProfile(id) {
+    try {
+      const user = await userModel.findById(id).select('-password -__v -createdAt -_id');
+      return user;
+    } catch (error) {
+      throw new CustomError(404), 'Not found user'
     }
   },
 };
