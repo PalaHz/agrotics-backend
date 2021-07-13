@@ -55,10 +55,40 @@ export const userService = {
 
   async getUserProfile(id) {
     try {
-      const user = await userModel.findById(id).select('-password -__v -createdAt -_id');
+      const user = await userModel
+        .findById(id)
+        .select("-password -__v -createdAt -_id");
       return user;
     } catch (error) {
-      throw new CustomError(404), 'Not found user'
+      throw (new CustomError(404), "Not found user");
+    }
+  },
+
+  async updatePassword(id, oldPassword, newPassword) {
+    try {
+      const user = await userModel.findById(id);
+      console.log(user.toObject().password);
+      if (comparePassword(oldPassword, user.toObject().password)) {
+        user.password = hashPassword(newPassword);
+        await user.save();
+      } else {
+        throw new CustomError(401, "Bad credentials");
+      }
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
+
+  async updateProfile(id, values) {
+    try {
+      const user = await userModel.findById(id);
+      Object.entries(values).forEach((item) => {
+        user[item[0]] = item[1];
+      });
+      const userTemp = await user.save();
+      return userTemp;
+    } catch (error) {
+      throw new CustomError(500, "Internal Server Error");
     }
   },
 };

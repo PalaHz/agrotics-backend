@@ -5,5 +5,3 @@ export class CustomError extends Error {
     this.message = message;
   }
 }
-
-const test = 'test';

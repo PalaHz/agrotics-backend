@@ -70,11 +70,57 @@ router.delete("/", authenticateJwt, adminMiddleware, async (req, res) => {
 
 router.get("/profile", authenticateJwt, async (req, res) => {
   try {
-    const user = await userService.getUserProfile(res.locals.user._id)
+    const user = await userService.getUserProfile(res.locals.user._id);
     res.send(user);
   } catch (error) {
-    res.status(error.status).send(error.message)
+    res.status(error.status).send(error.message);
   }
 });
+
+router.post(
+  "/update-profile",
+  authenticateJwt,
+  body("email").optional(),
+  body("firstName").optional(),
+  body("lastName").optional(),
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    try {
+      const user = await userService.updateProfile(
+        res.locals.user._id,
+        req.body
+      );
+      res.json(user);
+    } catch (error) {
+      res.status(error.status).json({ message: error.message });
+    }
+  }
+);
+
+router.post(
+  "/update-password",
+  body("oldPassword").notEmpty().isString(),
+  body("newPassword").notEmpty().isString(),
+  authenticateJwt,
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    try {
+      const response = await userService.updatePassword(
+        res.locals.user._id,
+        req.body.oldPassword,
+        req.body.newPassword
+      );
+      res.json({ message: "Password updated succesfully" });
+    } catch (error) {
+      res.status(400).json({ message: error.message });
+    }
+  }
+);
 
 export default router;
