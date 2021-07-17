@@ -11,6 +11,7 @@ const port = process.env.PORT; // default port to listen
 import "./config/database";
 import { campDataRoutes } from "./api/campdata.routes";
 import { authenticateJwt } from "./middlewares/authorization";
+import { PlacesRouter } from "./api/place.routes";
 app.get("/", (req, res) => {
   res.json({ message: "Ok succes actualizado cors MANUEL AA" });
 });
@@ -23,6 +24,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/users", userRouter);
 app.use("/plants", authenticateJwt, plantsRouter);
 app.use("/campData", authenticateJwt, campDataRoutes);
+app.use("/places", authenticateJwt, PlacesRouter);
+
 
 // start the express server
 app.listen(port, () => {
