@@ -12,6 +12,7 @@ import "./config/database";
 import { campDataRoutes } from "./api/campdata.routes";
 import { authenticateJwt } from "./middlewares/authorization";
 import { PlacesRouter } from "./api/place.routes";
+import { StatisticsRouter } from "./api/statistics.routes";
 app.get("/", (req, res) => {
   res.json({ message: "Ok succes actualizado cors MANUEL AA" });
 });
@@ -25,6 +26,8 @@ app.use("/users", userRouter);
 app.use("/plants", authenticateJwt, plantsRouter);
 app.use("/campData", authenticateJwt, campDataRoutes);
 app.use("/places", authenticateJwt, PlacesRouter);
+app.use("/statistics", authenticateJwt, StatisticsRouter);
+
 
 
 // start the express server

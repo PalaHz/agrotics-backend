@@ -22,5 +22,13 @@ export const PlaceService = {
       } catch (error) {
           throw new CustomError(500, 'Internal Server Error')
       }
+  },
+  async getAllPlaces(){
+    try {
+      const places = await PlaceModel.find().select('name _id')
+      return places
+    } catch (error) {
+      throw new CustomError(500, 'Internal Server Error')
+    }
   }
 };

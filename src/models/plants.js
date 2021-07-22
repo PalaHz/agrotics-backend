@@ -2,6 +2,7 @@ import mongoose, { model, Schema } from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
 const plantSchema = new Schema({
   commonName: { type: String, required: true },
+  place: { type: mongoose.Schema.Types.ObjectId, required: true },
   cientificName: { type: String, required: true },
   createdAt: { type: Date, default: Date.now() },
   createdBy: {

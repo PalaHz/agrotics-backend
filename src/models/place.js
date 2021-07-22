@@ -5,6 +5,7 @@ const arrayLimit = (val) => {
 };
 const PlaceSchema = new Schema({
   name: { type: String, required: true, unique: true },
+  date: { type: Date, required: true, default: Date.now() },
   desc: { type: String },
   coordenates: {
     type: [{ type: Number }],
