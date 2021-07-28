@@ -14,8 +14,11 @@ const plantsRouter = express.Router();
 //Plants
 plantsRouter.get("/table/", authenticateJwt, async (req, res) => {
   try {
+    let filters = {}
+    if(req.query.place) filters.place = req.query.place;
+    if(req.query.author) filters.createdBy = req.query.author;
     const page = req.query.page;
-    const plants = await PlantsService.getAllPlants(page);
+    const plants = await PlantsService.getAllPlants(page, filters);
     res.json(plants);
   } catch (error) {
     res.status(500).send("Internal Server Error");

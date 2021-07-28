@@ -4,10 +4,11 @@ import aws from "aws-sdk";
 
 export const PlantsService = {
   /* Plant pagination */
-  async getAllPlants(page) {
+  async getAllPlants(page, filters) {
+    console.log(filters)
     try {
       let plants = await plantModel.paginate(
-        {},
+        filters,
         {
           select: "createdAt _id commonName cientificName",
           page,

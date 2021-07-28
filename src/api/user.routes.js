@@ -50,7 +50,7 @@ router.post(
   }
 );
 
-router.get("/", authenticateJwt, adminMiddleware, async (req, res) => {
+router.get("/", authenticateJwt, async (req, res) => {
   try {
     const users = await userService.getAllUsers(res.locals.user);
     res.json(users);

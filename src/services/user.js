@@ -37,7 +37,7 @@ export const userService = {
     try {
       const users = await userModel
         .find({ _id: { $ne: user._id }, rol: { $ne: "ADMIN" } })
-        .select("-password");
+        .select("-password -createdAt -email -__v");
       return users;
     } catch (error) {
       throw new CustomError(500, "Internal Server Error");
