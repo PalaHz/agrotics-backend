@@ -1,9 +1,12 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 dotenv.config();
+
+//Importar variables de entorno locales
+require('dotenv').config({path: '.env'});
+console.log(process.env.DB_URL);
 mongoose
-  .connect(
-    `mongodb://localhost:27017/agrotic`,
+  .connect(process.env.DB_URL,
     { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true }
   )
   .then(() => {
