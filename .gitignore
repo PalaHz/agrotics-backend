@@ -1,3 +1,4 @@
 node_modules
 .env
-agrotic-instance.pem
+agroic-instance.pem
+dump
