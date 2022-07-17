@@ -25,7 +25,6 @@
   },
   "dependencies": {
     "express":"*",
-    "express-session": "^1.7.6",
     "body-parser":"*",
     "@babel/core": "^7.14.3",
     "@babel/node": "^7.14.2",
